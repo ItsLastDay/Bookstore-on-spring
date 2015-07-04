@@ -1,0 +1,38 @@
+<project name="CreateAndPopulateDB" basedir="." default="default">
+	<property name="db_url" value="jdbc:sqlserver://localhost"/>
+	<property name="db_user" value="last"/>
+	<property name="db_pass" value="prak6"/>
+	<property name="db_driver_location" value="C:\Program Files\mjdbc\sqljdbc_4.0\enu\sqljdbc4.jar"/>
+	<property name="db_driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+	
+	<target name="create_db">
+		<sql driver="${db_driver}" url="${db_url}" userid="${db_user}" password="${db_pass}" delimiter="GO" print="TRUE" autocommit="TRUE">
+			<classpath path="${db_driver_location}"/>
+			<transaction src="create_db.sql"/>
+		</sql>
+	</target>
+	<target name="populate_db">
+			<sql driver="${db_driver}" url="${db_url}" userid="${db_user}" password="${db_pass}" delimiter="\n" encoding="UTF-8" print="TRUE" autocommit="TRUE">
+				<classpath path="${db_driver_location}"/>
+				<transaction src="populate_db.sql"/>
+			</sql>
+		</target>
+	<target name="print_db" depends="populate_db">
+		<sql driver="${db_driver}" url="${db_url}" userid="${db_user}" password="${db_pass}" print="TRUE" autocommit="TRUE">			
+			<classpath path="${db_driver_location}"/>
+			USE test; SELECT * FROM Author;
+			SELECT * FROM Book;
+			SELECT * FROM [Order];
+			SELECT * FROM City;
+			SELECT * FROM Publisher;
+		</sql>
+	</target>
+	<target name="drop_db">
+		<sql driver="${db_driver}" url="${db_url}" userid="${db_user}" password="${db_pass}" print="TRUE" autocommit="TRUE">			
+			<classpath path="${db_driver_location}"/>
+			<transaction src="drop_db.sql"/>
+		</sql>
+	</target>
+	<target name="default" depends="create_db,populate_db,print_db,drop_db">
+	</target>
+</project>

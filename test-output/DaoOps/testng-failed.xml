@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [DaoOps]">
+  <test name="logic(failed)">
+    <classes>
+      <class name="springapp.library.test.LogicTest">
+        <methods>
+          <include name="readPushkin"/>
+          <include name="addNewCityThroughNewClient"/>
+          <include name="addExistantAuthorToExistantBook"/>
+          <include name="addNewGenreWithExistantBook1"/>
+          <include name="tearDown"/>
+          <include name="setUp"/>
+          <include name="addExistantBookToNewOrder"/>
+          <include name="addNewPublisherThroughNewBook"/>
+          <include name="exampleFilter"/>
+          <include name="readOrder"/>
+          <include name="addExistingBookToExistingOrder"/>
+          <include name="addNewGenreWithExistantBook2"/>
+          <include name="equalityOfBooks"/>
+        </methods>
+      </class> <!-- springapp.library.test.LogicTest -->
+    </classes>
+  </test> <!-- logic(failed) -->
+</suite> <!-- Failed suite [DaoOps] -->

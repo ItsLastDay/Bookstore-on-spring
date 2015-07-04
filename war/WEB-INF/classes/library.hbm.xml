@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false" default-cascade="save-update">
+    <class name="springapp.library.classes.Author" table="Author">
+        <id name="id">
+            <generator class="identity"/>
+        </id>
+        <property name="lastName" column="last_name"/>
+        <property name="firstName" column="first_name"/>
+        <property name="biography"/>
+        <property name="photo"/>
+        <set name="books" inverse="true" table="[Author-to-Book]">
+    		<key column="author_id"/>
+    		<many-to-many class="springapp.library.classes.Book">
+    			<column name="book_id"/>
+    		</many-to-many> 
+    	</set>
+    </class>
+    
+    <class name="springapp.library.classes.Genre" table="Genre">
+    	<id name="id">
+    		<generator class="identity"/>
+    	</id>
+    	<property name="name" unique="true"/>
+    	<set name="books" inverse="true" table="[Book-to-Genre]">
+    		<key column="genre_id"/>
+    		<many-to-many class="springapp.library.classes.Book">
+    			<column name="book_id"/>
+    		</many-to-many>
+    	</set>
+    </class>
+    
+    <class name="springapp.library.classes.Book" table="Book">
+    	<id name="id">
+    		<generator class="identity"/>
+    	</id>
+    	<properties name="book_identifier" unique="true">
+    		<property name="title"/>
+    		<property name="year"/>
+    		<property name="numPages" column="num_pages"/>
+    		<many-to-one name="publisher" class="springapp.library.classes.Publisher" 
+    			column="publisher_id"/>
+    		<many-to-one name="bookface" class="springapp.library.classes.Bookface"
+    			column="bookface_type"/>
+    	</properties>
+    	<property name="price"/>
+    	<property name="quantity"/>
+    	<property name="description"/>
+    	<property name="faceImage" column="face_image"/>
+    	<property name="faceImageBig" column="face_image_big"/>
+    	<property name="innerImage" column="inner_image"/>
+    	<set name="genres" table="[Book-to-Genre]">
+    		<key column="book_id"/>
+    		<many-to-many class="springapp.library.classes.Genre">
+    			<column name="genre_id"/>
+    		</many-to-many>
+    	</set>
+    	<set name="authors" table="[Author-to-Book]">
+    		<key column="book_id"/>
+    		<many-to-many class="springapp.library.classes.Author">
+    			<column name="author_id"/>
+    		</many-to-many>
+    	</set>
+    </class>
+    
+    <class name="springapp.library.classes.Publisher" table="Publisher">
+    	<id name="id">
+    		<generator class="identity"/>
+    	</id>
+    	<many-to-one name="city" class="springapp.library.classes.City"
+    		column="city_id"/>
+    	<property name="name" unique="true"/>
+    </class>
+    
+    <class name="springapp.library.classes.City" table="City">
+    	<id name="id">
+    		<generator class="identity"/>
+    	</id>
+    	<property name="name" unique="true"/>
+    </class>
+    
+    <class name="springapp.library.classes.Bookface" table="Bookface" mutable="false">
+    	<id name="type" type="string">
+    		<generator class="assigned"/>
+    	</id>
+    </class>
+    
+    <class name="springapp.library.classes.Client" table="Client">
+    	<id name="id">
+    		<generator class="identity"/>
+    	</id>
+    	<natural-id>
+    		<property name="login"/>
+    	</natural-id>
+    	<property name="lastName" column="last_name"/>
+    	<property name="firstName" column="first_name"/>
+    	<property name="wing"/>
+    	<property name="street"/>
+    	<property name="passwordHash" column="password_hash"/>
+    	<property name="privilege"/>
+    	<property name="house"/>
+    	<property name="postalCode" column="postal_code"/>
+    	<property name="phone"/>
+    	<many-to-one name="city" class="springapp.library.classes.City"
+    		column="city_id"/>
+    </class>
+    
+    <class name="springapp.library.classes.OrderStatus" table="OrderStatus" mutable="false">
+    	<id name="name" type="string">
+    		<generator class="assigned"/>
+    	</id>
+    </class>
+    
+    <class name="springapp.library.classes.Order" table="[Order]">
+    	<id name="id">
+    		<generator class="identity"/>
+    	</id>
+    	<property name="whenMade" column="when_made"/>
+    	<property name="description"/>
+    	<many-to-one name="status" class="springapp.library.classes.OrderStatus" column="orderstatus_name"/>
+    	<many-to-one name="client" class="springapp.library.classes.Client"
+    		column="client_id"/>
+    	<map name="books" table="[Book-to-Order]">
+    		<key column="order_id"/>
+    		<map-key-many-to-many column="book_id" class="springapp.library.classes.Book"/>
+    		<element type="int" column="quantity"/>
+    	</map>
+    </class>
+</hibernate-mapping>

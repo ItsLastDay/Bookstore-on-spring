@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="DaoOps" parallel="false">
+  <test name="logic">
+  	<classes>
+  	  <class name="springapp.library.test.LogicTest">
+  	  </class>
+  	</classes>
+  </test>
+</suite> <!-- Suite -->
